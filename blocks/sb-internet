@@ -1,0 +1,33 @@
+#!/bin/bash
+
+# Based off of Luke Smith's script of the same name.
+
+# Show wifi 📶 and percent strength or 📡 if none.
+# Show 🌐 if connected to ethernet or ❎ if none.
+# Show 🔒 if a vpn connection is active
+
+case $BLOCK_BUTTON in
+	1) "$TERMINAL" -e nmtui; pkill -RTMIN+4 dwmblocks ;;
+	3) notify-send "🌐 Internet module" "\- Click to connect
+📡: no wifi connection
+📶: wifi connection with quality
+❎: no ethernet
+🌐: ethernet working
+🔒: vpn is active
+" ;;
+	6) "$TERMINAL" -e "$EDITOR" "$0" ;;
+esac
+
+for path in /sys/class/net/w*; do
+	ix=$(echo "$path" | sed 's/.*\/\(.*\)/\1/g')
+	if [ "$(cat $path/operstate 2>/dev/null)" = "up" ]; then
+		ssid="$(nmcli d show $ix | grep "GENERAL.CONNECTION" | tr -s ' ' | cut -d ' ' -f2- )"
+		break
+	fi
+done
+
+if [ "$ssid" ]; then
+	printf "📶 %s" "$ssid"
+else
+	printf "❎ %s" "Down"
+fi
