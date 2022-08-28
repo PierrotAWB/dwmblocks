@@ -1,4 +1,5 @@
 #!/bin/sh
+
 case "$1" in
-    *) date "+%a %Y-%m-%d %I:%M:%s%p"
+    *) exec "$TERMINAL" -e date "+%a %Y-%m-%d %I:%M:%s%p" ;;
 esac

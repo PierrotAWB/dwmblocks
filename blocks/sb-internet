@@ -27,7 +27,7 @@ for path in /sys/class/net/w*; do
 done
 
 if [ "$ssid" ]; then
-	printf "📶 %s" "$ssid"
+	printf " %s" "$ssid"
 else
-	printf "❎ %s" "Down"
+	printf " %s" "No connection"
 fi
